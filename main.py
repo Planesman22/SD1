@@ -35,7 +35,6 @@ class ObjectDetection:
         return frame
 
     def __call__(self):
-        import cv2
         player = cv2.VideoCapture(0)  # 0 means read from local camera.
         while player.isOpened():
             ret, frame = player.read()
