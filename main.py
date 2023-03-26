@@ -8,7 +8,7 @@ class ObjectDetection:
         self.device = 'cpu'
 
     def load_model(self):
-        model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+        model = torch.hub.load('model/ultralytics_yolov5_master', 'yolov5s', source='local', pretrained=True)
         return model
 
     def score_frame(self, frame):
