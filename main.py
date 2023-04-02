@@ -5,7 +5,7 @@ class ObjectDetection:
     def __init__(self):
         self.model = self.load_model()
         self.classes = self.model.names
-        self.device = 'gpu'
+        self.device = 'cuda'
 
     def load_model(self):
         model = torch.hub.load('model/ultralytics_yolov5_master', 'yolov5s', source='local', pretrained=True)
