@@ -1,8 +1,6 @@
 import cv2
-import numpy as np
 import socket
 import subprocess
-import sys
 import time
 
 TargetIP = "192.168.2.10"
@@ -10,7 +8,7 @@ Port = 5000
 Socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Try to get camera to work
-while true:
+while True:
     try:
         Cam = cv2.VideoCapture(0)
         if Cam.isOpened():
@@ -28,6 +26,10 @@ while true:
 CamWidth = int(Cam.get(cv2.CAP_PROP_FRAME_WIDTH))
 CamHeight = int(Cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
 CamFPS = int(Cam.get(cv2.CAP_PROP_FPS))
+
+print("Cam Width: "+str(CamWidth))
+print("Cam Height: "+str(CamHeight))
+print("Cam FPS: "+str(CamFPS))
 
 ffmpeg_cmd = [
     'ffmpeg',
