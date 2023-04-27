@@ -33,6 +33,8 @@ class ObjectDetection:
                 bgr = (0, 255, 0)
                 cv2.rectangle(frame, (x1, y1), (x2, y2), bgr, 2)
                 cv2.putText(frame, self.class_to_label(labels[i]), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.9, bgr, 2)
+                print("ID: " + str(Result) + " probability: " + str(row[4]))
+        os.system('clear')
         return frame
 
     def __call__(self):
@@ -47,15 +49,10 @@ class ObjectDetection:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            # Extract class probabilities
-            MinConfidence = 0.5
-            for Result in results:
-                Probabilities = results.pred[0][:, 5:].softmax(1).cpu().numpy()
 
-                print("ID: "+str(Result)+" probability: "+str(Probabilities[int(Result)]))
-            os.system('clear')
         player.release()
         cv2.destroyAllWindows()
 
 a = ObjectDetection()
 a()
+a
