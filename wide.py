@@ -3,6 +3,7 @@ import numpy as np
 import socket
 import struct
 import sys
+import time
 
 # Configure the UDP socket
 local_ip = "192.168.137.10"
@@ -25,6 +26,9 @@ try:
             print("Error: Could not read frame from video stream.")
             break
 
+        # Resize
+        frame = cv2.resize(frame, (320,240))
+
         # Encode the frame as a JPEG image
         result, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
 
@@ -35,7 +39,7 @@ try:
         # Send the encoded frame using the UDP socket
         data = buffer.tostring()
         sock.sendto(data, (local_ip, local_port))
-
+        time.sleep(1)
 finally:
     # Clean up the resources
     cap.release()
