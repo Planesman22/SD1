@@ -1,28 +1,34 @@
-import gi
-import sys
+import cv2
+import numpy as np
+import socket
+import struct
 
-gi.require_version('Gst', '1.0')
-from gi.repository import Gst, GLib
+# Configure the UDP socket
+local_ip = "192.168.137.10"
+local_port = 5000
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((local_ip, local_port))
 
-# Initialize GStreamer
-Gst.init(None)
+cv2.namedWindow('Received Video', cv2.WINDOW_NORMAL)
 
-# Replace with the port number you used in the Raspberry Pi command
-port = 5000
-
-# Create GStreamer pipeline
-pipeline_str = 'udpsrc port={} caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, ' \
-               'encoding-name=(string)H264" ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert ! ' \
-               'autovideosink'.format(port)
-pipeline = Gst.parse_launch(pipeline_str)
-
-# Start the GStreamer pipeline
-pipeline.set_state(Gst.State.PLAYING)
-
-# Run the GLib main loop
-main_loop = GLib.MainLoop()
 try:
-    main_loop.run()
-except KeyboardInterrupt:
-    pipeline.set_state(Gst.State.NULL)
-    main_loop.quit()
+    while True:
+        # Receive the encoded frame from the sender
+        data, addr = sock.recvfrom(65536)
+
+        # Decode the received frame
+        frame_data = np.frombuffer(data, dtype=np.uint8)
+        frame = cv2.imdecode(frame_data, cv2.IMREAD_COLOR)
+
+        if frame is not None:
+            # Display the received frame
+            cv2.imshow('Received Video', frame)
+
+            # Exit if the user presses the 'q' key
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+finally:
+    # Clean up the resources
+    sock.close()
+    cv2.destroyAllWindows()
