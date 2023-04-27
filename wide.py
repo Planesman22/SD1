@@ -10,7 +10,7 @@ local_port = 5000
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Configure the OpenCV VideoCapture object
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 if not cap.isOpened():
     print("Error: Could not open the video stream.")
