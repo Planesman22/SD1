@@ -1,34 +1,52 @@
+import torch
 import cv2
-import numpy as np
-import socket
-import struct
 
-# Configure the UDP socket
-local_ip = "192.168.137.10"
-local_port = 5000
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind((local_ip, local_port))
+class ObjectDetection:
+    def __init__(self):
+        self.model = self.load_model()
+        self.classes = self.model.names
+        self.device = 'cpu'
 
-cv2.namedWindow('Received Video', cv2.WINDOW_NORMAL)
+    def load_model(self):
+        model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+        return model
 
-try:
-    while True:
-        # Receive the encoded frame from the sender
-        data, addr = sock.recvfrom(65536)
+    def score_frame(self, frame):
+        self.model.to(self.device)
+        frame = [frame]
+        results = self.model(frame)
+        labels, cord = results.xyxyn[0][:, -1].numpy(), results.xyxyn[0][:, :-1].numpy()
+        return labels, cord
 
-        # Decode the received frame
-        frame_data = np.frombuffer(data, dtype=np.uint8)
-        frame = cv2.imdecode(frame_data, cv2.IMREAD_COLOR)
+    def class_to_label(self, x):
+        return self.classes[int(x)]
 
-        if frame is not None:
-            # Display the received frame
-            cv2.imshow('Received Video', frame)
+    def plot_boxes(self, results, frame):
+        labels, cord = results
+        n = len(labels)
+        x_shape, y_shape = frame.shape[1], frame.shape[0]
+        for i in range(n):
+            row = cord[i]
+            if row[4] >= 0.2:
+                x1, y1, x2, y2 = int(row[0]*x_shape), int(row[1]*y_shape), int(row[2]*x_shape), int(row[3]*y_shape)
+                bgr = (0, 255, 0)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), bgr, 2)
+                cv2.putText(frame, self.class_to_label(labels[i]), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.9, bgr, 2)
+        return frame
 
-            # Exit if the user presses the 'q' key
+    def __call__(self):
+        import cv2
+        player = cv2.VideoCapture(0)  # 0 means read from local camera.
+        while player.isOpened():
+            ret, frame = player.read()
+            assert ret
+            results = self.score_frame(frame)
+            frame = self.plot_boxes(results, frame)
+            cv2.imshow('Webcam', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+        player.release()
+        cv2.destroyAllWindows()
 
-finally:
-    # Clean up the resources
-    sock.close()
-    cv2.destroyAllWindows()
+a = ObjectDetection()
+a()
