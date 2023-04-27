@@ -22,6 +22,10 @@ while True:
         Cam.release()
         time.sleep(1)
 
+Cam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+Cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+Cam.set(cv2.CAP_PROP_FPS, 15)
+
 # Setup FFMPeg
 CamWidth = int(Cam.get(cv2.CAP_PROP_FRAME_WIDTH))
 CamHeight = int(Cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
