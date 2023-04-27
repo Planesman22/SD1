@@ -50,7 +50,7 @@ class ObjectDetection:
             # Extract class probabilities
             MinConfidence = 0.5
             for Result in results:
-                Probabilities = results[:, 5:].softmax(1).cpu().numpy()
+                Probabilities = results.xyxy[0][:, 5:].softmax(1).cpu().numpy()
 
                 print("ID: "+str(Result)+" probability: "+str(Probabilities[int(Result)]))
             os.system('clear')
