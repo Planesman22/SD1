@@ -1,5 +1,6 @@
 import torch
 import cv2
+import os
 
 class ObjectDetection:
     def __init__(self):
@@ -45,6 +46,14 @@ class ObjectDetection:
             cv2.imshow('Webcam', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+
+            # Extract class probabilities
+            MinConfidence = 0.5
+            for Result in results:
+                Probabilities = self.pred[0][:, 5:].softmax(1).cpu().numpy()
+
+                print("ID: "+str(Result)+" probability: "+str(Probabilities[int(Result)]))
+            os.system('clear')
         player.release()
         cv2.destroyAllWindows()
 
