@@ -26,7 +26,7 @@ try:
             break
 
         # Encode the frame as a JPEG image
-        result, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+        result, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 50])
 
         if not result:
             print("Error: Could not encode the frame.")
