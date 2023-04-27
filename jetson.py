@@ -11,7 +11,9 @@ Gst.init(None)
 port = 5000
 
 # Create GStreamer pipeline
-pipeline_str = f'udpsrc port={port} caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264" ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert ! autovideosink'
+pipeline_str = 'udpsrc port={} caps="application/x-rtp, media=(string)video, clock-rate=(int)90000, ' \
+               'encoding-name=(string)H264" ! rtph264depay ! h264parse ! avdec_h264 ! videoconvert ! ' \
+               'autovideosink'.format(port)
 pipeline = Gst.parse_launch(pipeline_str)
 
 # Start the GStreamer pipeline
