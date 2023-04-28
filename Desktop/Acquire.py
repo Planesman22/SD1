@@ -24,11 +24,10 @@ while Camera.isOpened():
         Labels = Results.xyxyn[0][:, -1].cpu().numpy()
         Cordinates = Results.xyxyn[0][:, :-1].cpu().numpy()
 
+        os.system("clear")
+
         for I in range(len(Labels)):
             print(Classes[Labels[I]])
-
-        print("Wait 10 5 Sec")
-        time.sleep(5)
 
 
     else:
