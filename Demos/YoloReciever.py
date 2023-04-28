@@ -1,17 +1,11 @@
 import socket
-import cv2
+import time
 
-# create a socket object
-Socket = socket.socket()
+ClientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ClientSocket.connect(('localhost', 96385))
 
-# get the local machine name
-Host = Socket.gethostname()
+# Send data to the server (e.g., box coordinates and text)
+Data = "100 100 50 50,Hello World"
 
-# connect to the server
-Socket.connect((Host, 96385))
-
-# send data to the server
-Socket.send("Hello, server!".encode())
-
-# close the socket
-Socket.close()
+ClientSocket.send(Data.encode('utf-8'))
+time.sleep(3)

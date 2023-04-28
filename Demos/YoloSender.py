@@ -13,17 +13,13 @@ YoloModel.to('cpu')
 Classes = YoloModel.names
 
 # Prep Socket
-Socket = socket.socket()
-Host = socket.gethostname()
+ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ServerSocket.bind(('localhost', 96385))
+ServerSocket.listen(1)
+print("Server is waiting for a connection...")
 
-Socket.bind((Host, 96385))
-
-print("Listening for connection at:"+str(Host)+"...")
-Socket.listen(1)
-
-ClientSocket, Address = Socket.accept()
-print("Socket Accepted from: "+str(Address))
-
+ClientSocket, ClientAddress = ServerSocket.accept()
+print("Connected to: ", str(ClientAddress)+"!")
 
 # Get Camera Frames :)
 Camera = cv2.VideoCapture(0)
