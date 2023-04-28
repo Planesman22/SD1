@@ -55,11 +55,13 @@ while Camera.isOpened():
                                                 iterations=3, poly_n=5, poly_sigma=1.1, flags=0)
             PVector[Class, 3] = numpy.mean(cv2.cartToPolar(Flow[..., 0], Flow[..., 1])[0])
 
+            cv2.putText(Frame, str(PVector[Class, 3]), (X1,Y1),cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,0,0), 2)
+
             # Update Last Frame
     LastFrame = Frame.copy()
-
+    cv2.imshow("Window", Frame)
     os.system("clear")
-    print(PVector)
+    print(numpy.round(PVector, decimals=2))
     # We cut the frame
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
