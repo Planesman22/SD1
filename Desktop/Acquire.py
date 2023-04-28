@@ -5,7 +5,7 @@ import sys
 
 # Load Model
 YoloModel = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
-YoloModel.to('GPU')
+YoloModel.to('cpu')
 
 # Get Camera Frames :)
 Camera = cv2.VideoCapture(0)
@@ -17,5 +17,5 @@ while Camera.isOpened():
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-player.release()
+Camera.release()
 cv2.destroyAllWindows()
