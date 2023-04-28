@@ -32,7 +32,7 @@ while Camera.isOpened():
     for I in range(PVector.shape[0]):
         PVector[I, 0] = I
 
-    DisplayFrame = numpy.zeros((1080, 1920, 3))
+    DisplayFrame = Frame.copy()
 
     # Class probabilities and Size
     for I in Results:
@@ -63,7 +63,7 @@ while Camera.isOpened():
             Size = TargetW * TargetH
             PVector[Class, 3] = numpy.mean(cv2.cartToPolar(Flow[..., 0], Flow[..., 1])[0])
 
-            cv2.putText(DisplayFrame, str(numpy.round(PVector[Class, 3], decimals=2)), (X1,Y1),cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,0,0), 2)
+            cv2.putText(DisplayFrame, str(numpy.round(PVector[Class], decimals=2)), (X1,Y1),cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,0,0), 2)
             cv2.rectangle(DisplayFrame, (X1, Y1), (X2, Y2), (max(0, min(PVector[Class, 3]*10, 255)),255,0), 2)
 
             # Update Last Frame
