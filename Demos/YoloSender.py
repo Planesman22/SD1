@@ -7,6 +7,8 @@ import time
 import socket
 import json
 
+RecieverIP = "131.247.10.146"
+
 # Load Model
 YoloModel = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
 YoloModel.to('cpu')
@@ -14,7 +16,7 @@ Classes = YoloModel.names
 
 # Prep Socket
 ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ServerSocket.bind(('localhost', 96385))
+ServerSocket.bind((RecieverIP, 96385))
 ServerSocket.listen(1)
 print("Server is waiting for a connection...")
 

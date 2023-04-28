@@ -1,6 +1,8 @@
 import socket
 import time
 
+ServerIP =
+
 ClientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ClientSocket.connect(('localhost', 96385))
 
