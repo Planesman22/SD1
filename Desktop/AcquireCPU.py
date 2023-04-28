@@ -54,8 +54,7 @@ while Camera.isOpened():
             Flow = cv2.calcOpticalFlowFarneback(GrayA, GrayB, None, pyr_scale=0.5, levels=3, winsize=15,
                                                 iterations=3, poly_n=5, poly_sigma=1.1, flags=0)
 
-            Speed = numpy.mean(cv2.cartToPolar(Flow[..., 0], Flow[..., 1])[0])
-            PVector[Class, 3] = Speed
+            PVector[Class, 3] = numpy.mean(cv2.cartToPolar(Flow[..., 0], Flow[..., 1])[0])
 
             cv2.putText(Frame, str(numpy.round(Speed, decimals=2)), (X1,Y1),cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,0,0), 2)
 
