@@ -5,6 +5,7 @@ import sys
 import os
 import time
 import socket
+import json
 
 # Load Model
 YoloModel = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
@@ -15,14 +16,13 @@ Classes = YoloModel.names
 Socket = socket.socket()
 Host = socket.gethostname()
 
-Socket.bind((Host, 13579))
+Socket.bind((Host, 96385))
 
 print("Listening for connection at:"+str(Host)+"...")
 Socket.listen(1)
 
 ClientSocket, Address = Socket.accept()
 print("Socket Accepted from: "+str(Address))
-
 
 
 # Get Camera Frames :)
