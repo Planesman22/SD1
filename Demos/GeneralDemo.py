@@ -32,7 +32,7 @@ while Camera.isOpened():
     for I in range(PVector.shape[0]):
         PVector[I, 0] = I
 
-    DisplayFrame = numpy.zeros((1920, 1080, 3))
+    DisplayFrame = numpy.zeros((1080, 1920, 3))
 
     # Class probabilities and Size
     for I in Results:
