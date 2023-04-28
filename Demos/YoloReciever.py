@@ -4,7 +4,7 @@ import time
 ServerIP = "192.168.2.10"
 
 ClientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ClientSocket.connect(('localhost', 45612))
+ClientSocket.connect((ServerIP, 45612))
 
 # Send data to the server (e.g., box coordinates and text)
 Data = "100 100 50 50,Hello World"

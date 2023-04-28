@@ -16,7 +16,7 @@ Classes = YoloModel.names
 
 # Prep Socket
 ServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ServerSocket.bind((RecieverIP, 45612))
+ServerSocket.bind(('localhost', 45612))
 ServerSocket.listen(1)
 print("Server is waiting for a connection...")
 
