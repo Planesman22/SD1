@@ -4,11 +4,26 @@ import numpy
 import sys
 import os
 import time
+import socket
 
 # Load Model
 YoloModel = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
 YoloModel.to('cpu')
 Classes = YoloModel.names
+
+# Prep Socket
+Socket = socket.socket()
+Host = socket.gethostname()
+
+Socket.bind((Host, 13579))
+
+print("Listening for connection at:"+str(Host)+"...")
+Socket.listen(1)
+
+ClientSocket, Address = Socket.accept()
+print("Socket Accepted from: "+str(Address))
+
+
 
 # Get Camera Frames :)
 Camera = cv2.VideoCapture(0)
@@ -49,10 +64,10 @@ while Camera.isOpened():
             # cv2.imshow(Classes[Class], Frame[Y1:Y2,X1:X2])
 
             # Optical Flow, gray scale only
-            #GrayA = cv2.cvtColor(LastFrame[Y1:Y2,X1:X2], cv2.COLOR_BGR2GRAY)
-            #GrayB = cv2.cvtColor(Frame[Y1:Y2,X1:X2], cv2.COLOR_BGR2GRAY)
-            #Flow = cv2.calcOpticalFlowFarneback(GrayA, GrayB, None, pyr_scale=0.5, levels=3, winsize=15,
-            #                                    iterations=3, poly_n=5, poly_sigma=1.1, flags=0)
+            GrayA = cv2.cvtColor(LastFrame[Y1:Y2,X1:X2], cv2.COLOR_BGR2GRAY)
+            GrayB = cv2.cvtColor(Frame[Y1:Y2,X1:X2], cv2.COLOR_BGR2GRAY)
+            Flow = cv2.calcOpticalFlowFarneback(GrayA, GrayB, None, pyr_scale=0.5, levels=3, winsize=15,
+                                                iterations=3, poly_n=5, poly_sigma=1.1, flags=0)
 
             Size = TargetW * TargetH
             #PVector[Class, 3] = numpy.mean(cv2.cartToPolar(Flow[..., 0], Flow[..., 1])[0])
@@ -62,7 +77,6 @@ while Camera.isOpened():
             # Update Last Frame
     LastFrame = Frame.copy()
     cv2.imshow("Window", Frame)
-    break
     print(numpy.round(PVector, decimals=2))
     # We cut the frame
 
