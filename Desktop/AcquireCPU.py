@@ -7,7 +7,7 @@ import time
 
 # Load Model
 YoloModel = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
-YoloModel.to('cuda')
+YoloModel.to('cpu')
 Classes = YoloModel.names
 
 # Get Camera Frames :)
@@ -21,7 +21,7 @@ while Camera.isOpened():
     FrameHeight = Frame.shape[0]
 
     FrameNumpy = [Frame]
-    Results = YoloModel(FrameNumpy).xyxyn[0].cpu().numpy()
+    Results = YoloModel(FrameNumpy).xyxyn[0].numpy()
 
     # Generate our feature  vector
     PVector = numpy.zeros((len(Classes), 4))
