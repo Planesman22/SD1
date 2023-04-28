@@ -7,7 +7,7 @@ import time
 import socket
 import json
 
-RecieverIP = "131.247.10.146"
+RecieverIP = "192.168.2.11"
 
 # Load Model
 YoloModel = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
