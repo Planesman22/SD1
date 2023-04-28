@@ -68,7 +68,7 @@ while Camera.isOpened():
 
             # Update Last Frame
     LastFrame = Frame.copy()
-    cv2.imshow("Window", Frame)
+    cv2.imshow("Window", DisplayFrame)
     print(numpy.round(PVector, decimals=2))
     # We cut the frame
 
